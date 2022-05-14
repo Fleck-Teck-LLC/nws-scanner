@@ -54,7 +54,14 @@ if (("EM_SERVER" in os.environ) and ("EM_PORT" in os.environ) and ("EM_FROM" in 
     em_port = os.environ['EM_PORT']
     em_password = os.environ['EM_PASS']
 
+    if ("EM_USERNAME" in os.environ):
+        em_username = os.environ["EM_USERNAME"]
+    else:
+        print("No username provided, login will use " + em_sender + " for authentication")
+        em_username = os.environ["EM_FROM"]
+
     print("Email Sender: " + em_sender)
+    print("Email Username: " + em_username)
     print("Email Receivers: " + em_receivers)
     print("Email Server: " + em_server)
     print("Email Port: " + em_port)
@@ -106,7 +113,7 @@ def getAlerts():
                     with smtplib.SMTP(em_server, port) as server:
                         server.starttls() # Secure the connection
 
-                        server.login(em_sender, em_password)
+                        server.login(em_username, em_password)
                         server.sendmail(em_sender, em_receivers, msg.as_string())
                         print("mail successfully sent")
 
